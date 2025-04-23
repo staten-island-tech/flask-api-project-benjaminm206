@@ -6,14 +6,15 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     
-    # We tell Flask to show the 'index.html' page and pass the list of Pokémon.
-    return render_template("index.html", pokemons=pokemons)
+    # We tell Flask to show the 'index.html' page
+    return render_template("index.html")
 
 # Route for the Pokémon details page
-@app.route("/pokemon/<int:id>")
-def pokemon_detail(id):
+@app.route("/car/<int:id>")
+def car_detail(id):
     # We get detailed info for a specific Pokémon using its id.
-    response = requests.get(f"https://pokeapi.co/api/v2/pokemon/{id}")
+    response = requests.get(f"https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json/
+{id}")
     data = response.json()
     
     # We extract extra details like types, height, weight, and stats.
