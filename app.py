@@ -13,15 +13,14 @@ def index():
 @app.route("/car/<int:id>")
 def car_detail(id):
     # We get detailed info for a specific Pokémon using its id.
-    response = requests.get(f"https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json/
-{id}")
+    response = requests.get(f"https://github.com/arthurkao/car-data{id}")
     data = response.json()
     
     # We extract extra details like types, height, weight, and stats.
     types = [t['type']['name'] for t in data['types']]
-    height = data.get('height')
-    weight = data.get('weight')
-    name = data.get('name').capitalize()
+    model = data.get('model')
+    make = data.get('make')
+    brand = data.get('brand').capitalize()
     image_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id}.png"
     
     # Get the Pokémon’s base stats (like hp, attack, defense, etc.)
