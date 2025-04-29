@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ car.model }} Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <h1>{{ car.brand }} {{ car.model }} Details</h1>
+        <div class="car-detail">
+            <img src="{{ car.image }}" alt="{{ car.model }}" />
+            <p><strong>ID:</strong> {{ car.id }}</p>
+            <p><strong>Make:</strong> {{ car.make }}</p>
+            <p><strong>Brand:</strong> {{ car.brand }}</p>
+            <p><strong>Year:</strong> {{ car.year }}</p>
+            <p><strong>Engine:</strong> {{ car.engine }}</p>
+            <p><strong>Horsepower:</strong> {{ car.horsepower }}</p>
+            <p><strong>Weight:</strong> {{ car.weight }}</p>
+        </div>
+
+        <!-- Chart container -->
+        <div class="car-stats">
+            <canvas id="statsChart"></canvas>
+        </div>
+        <button><a href="{{ url_for('index') }}">Back to all Cars</a></button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const statNames = {{ car.stat_names | tojson }};
+        const statValues = {{ car.stat_values | tojson }};
+
+        const ctx = document.getElementById('statsChart').getContext('2d');
+        const statsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: statNames,
+                datasets: [{
+                    label: 'Specs',
+                    data: statValues,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
