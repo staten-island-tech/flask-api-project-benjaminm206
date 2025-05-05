@@ -2,22 +2,27 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>The Garage</title>
+    <title>Trivia!</title>
     <!-- Link to your CSS stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
   </head>
   <body>
     <div class="container">
-      <h1>The Pixel Garage: Compare Your Favorite Cars</h1>
+      <h1>Its Trivia Time!</h1>
       <div class="card-container">
         <!-- Loop through each Pokémon and wrap each card in a link -->
-        {% for car in cars %}
-        <a href="{{ url_for('car_detail', id=car.id) }}" class="card-link">
+        {% for question in questions %}
+        <a
+          href="{{ url_for('trivia_question', id=trivia.id) }}"
+          class="card-link"
+        >
           <div class="card">
-            <img src="{{ car.image }}" alt="{{ car.name }}" />
             <div class="card-body">
-              <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
-              <p class="card-text">ID: {{ car.id }}</p>
+              <h5 class="card-title">{{ trivia.name }}</h5>
+              <p class="card-text">ID: {{ trivia.id }}</p>
             </div>
           </div>
         </a>
