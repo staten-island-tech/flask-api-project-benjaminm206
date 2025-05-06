@@ -12,17 +12,16 @@
   <body>
     <div class="container">
       <h1>Its Trivia Time!</h1>
-      <div class="card-container">
-        <!-- Loop through each Pokémon and wrap each card in a link -->
+      <div class="question-container">
         {% for question in questions %}
         <a
           href="{{ url_for('trivia_question', id=trivia.id) }}"
           class="card-link"
         >
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">{{ trivia.name }}</h5>
-              <p class="card-text">ID: {{ trivia.id }}</p>
+          <div class="question">
+            <div class="question-body">
+              <h5 class="question-title">{{ question.name }}</h5>
+              <p class="card-text">ID: {{ question.id }}</p>
             </div>
           </div>
         </a>
