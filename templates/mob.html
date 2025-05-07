@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ mob.name }} Details</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ mob.name }} Details</h1>
+      <div class="mob-detail">
+        <img src="{{ mob.image }}" alt="{{ mob.name }}" />
+        <p><strong>ID:</strong> {{ mob.id }}</p>
+        <p><strong>Type:</strong> {{ mob.type }}</p>
+        <p><strong>Attack Damage:</strong> {{ mob.attack_damage }}</p>
+        <p><strong>Attack Type:</strong> {{ mob.attack_type }}</p>
+        <p><strong>HP:</strong> {{ mob.health_points }}</p>
+        <p><strong>Spawn Biomes:</strong> {{ mob.spawn_biomes | join(', ') }}</p>
+        <p><strong>Drops:</strong> {{ mob.drops | join(', ') }}</p>
+        <p><strong>Description:</strong> {{ mob.description }}</p>
+  </body>
+</html>
+

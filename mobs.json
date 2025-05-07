@@ -1,0 +1,69 @@
+[
+    {
+      "name": "Zombie",
+      "id": 1,
+      "type": "Undead",
+      "attack_damage": 3,
+      "attack_type": "Melee",
+      "health_points": 20,
+      "spawn_biomes": ["Plains", "Forest", "Swamp"],
+      "drops": ["Rotten Flesh", "Iron Ingot", "Carrot", "Potato"],
+      "description": "A common hostile mob that burns in sunlight."
+    },
+    {
+      "name": "Skeleton",
+      "id": 2,
+      "type": "Undead",
+      "attack_damage": 2,
+      "attack_type": "Ranged (Arrow)",
+      "health_points": 20,
+      "spawn_biomes": ["Plains", "Forest", "Desert"],
+      "drops": ["Bones", "Arrows", "Bow"],
+      "description": "A ranged attacker that uses a bow to shoot arrows."
+    },
+    {
+      "name": "Creeper",
+      "id": 3,
+      "type": "Hostile",
+      "attack_damage": 49,
+      "attack_type": "Explosion",
+      "health-points": 20,
+      "spawn_biomes": ["Plains", "Forest", "Swamp"],
+      "drops": ["Gunpowder", "Music Disc (if killed by skeleton)"],
+    "description": "A silent mob that explodes when near the player."
+    },
+    {
+        "name": "Spider",
+        "id": 4,
+        "type": "Hostile (Neutral in daylight)",
+        "attack_damage": 2,
+        "attack_type": "Melee",
+        "health_points": 16,
+        "spawn_biomes": ["Forest", "Plains", "Swamp"],
+        "drops": ["String", "Spider Eye"],
+        "description": "A climbing mob that becomes passive in daylight."
+    },
+    {
+        "name": "Enderman",
+        "id": 5,
+        "type": "Neutral",
+        "attack_damage": 7,
+        "attack_type": "Melee (only if provoked)",
+        "health_points": 40,
+        "spawn_biomes": ["The End", "Warped Forest", "Overworld (rare)"],
+        "drops": ["Ender Pearl", "Block carried"],
+        "description": "A tall, teleporting mob that attacks if you look directly at it."
+    },
+    {
+        "name": "Iron Golem",
+        "id": 6,
+        "type": "Utility",
+        "attack_damage": 14,
+        "attack_type": "Melee (Knock-up punch)",
+        "health_points": 100,
+        "spawn_biomes": ["Villages", "Player-created"],
+        "drops": ["Iron Ingot", "Poppy"],
+        "description": "A powerful mob that protects villagers and attacks hostile mobs."
+    }
+      
+]

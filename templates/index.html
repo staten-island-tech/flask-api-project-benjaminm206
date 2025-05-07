@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Trivia!</title>
+    <title>Mob Brawl</title>
     <!-- Link to your CSS stylesheet -->
     <link
       rel="stylesheet"
@@ -11,17 +11,19 @@
   </head>
   <body>
     <div class="container">
-      <h1>Its Trivia Time!</h1>
-      <div class="question-container">
-        {% for question in questions %}
+      <h1>Mob Brawl</h1>
+      <div class="card-container">
+        <!-- Loop through each Pokémon and wrap each card in a link -->
+        {% for mob in mobs %}
         <a
-          href="{{ url_for('trivia_question', id=trivia.id) }}"
+          href="{{ url_for('mob_detail', id=mob.id) }}"
           class="card-link"
         >
-          <div class="question">
-            <div class="question-body">
-              <h5 class="question-title">{{ question.name }}</h5>
-              <p class="card-text">ID: {{ question.id }}</p>
+          <div class="card">
+            <img src="{{ mob.image }}" alt="{{ mob.name }}" />
+            <div class="card-body">
+              <h5 class="card-title">{{ mob.name }}</h5>
+              <p class="card-text">ID: {{ mob.id }}</p>
             </div>
           </div>
         </a>
