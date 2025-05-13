@@ -5,10 +5,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    response = requests.get("http://www.7timer.info/bin/api.pl?lon=113.17&lat=23.09&product=astro&output=xml")
-    data = response.json()
+    response = requests.get("https://api.weather.gov")
+    weather_details = response.json()
+    for weather in weather_details:
+        print(weather)
 
-weather = []
+""" weather = []
 
 for weather in weather_list:
     url = weather['url']
@@ -25,7 +27,5 @@ for weather in weather_list:
         'uv': weather['uv-index']
     })
 
-"""   return render_template("index.html, verses=verses") """
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) """
