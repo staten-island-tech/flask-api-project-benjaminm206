@@ -1,31 +1,24 @@
-from flask import Flask
+from flask import Flask, render_template
 import requests
 
 app = Flask(__name__)
 
 @app.route("/")
-def index():
-    response = requests.get("https://api.weather.gov")
-    weather_details = response.json()
-    for weather in weather_details:
-        print(weather)
+def home():
+    return render_template("index.html")
 
-""" weather = []
-
-for weather in weather_list:
-    url = weather['url']
-    parts = url.strip("/").split("/")
-    id = parts[-1]
-
-    weather.append({
-        'temp': weather['temp'],
-        'wind-speed': weather['wind'],
-        'precipitation': weather['precipitation'],
-        'hourly-forcast': weather['hourly-forecast'],
-        'visibility': weather['visibility'],
-        'aqi': weather['air-quality-index'],
-        'uv': weather['uv-index']
-    })
+@app.route("/weather", methods=["GET", "POST"])
+def weather():
+    url = "https://api.weather.gov/gridpoints/MPX/107,71/forecast"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        forecast = response.json()
+        return render_template("weather.html", forecast=forecast)
+    except Exception as e:
+        print("Error:", e)
+        return render_template("weather.html", forecast=None)
 
 if __name__ == '__main__':
-    app.run(debug=True) """
+    app.run(debug=True)
+

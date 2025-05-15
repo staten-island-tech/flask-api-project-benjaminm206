@@ -3,11 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>Weatherly</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(to bottom right, #e9f0f5, #ffffff);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .btn-vision {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-
+    <div class="glass-card">
+        <h1>☁️ Welcome to Weatherly</h1>
+        <p>Get real-time, beautiful weather data presented in a sleek interface.</p>
+        <form method="POST" action="/weather">
+            <div class="mb-3">
+                <label for="city" class="form-label">Enter City</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="e.g., New York">
+            </div>
+            <button type="submit" class="btn btn-primary btn-vision me-2">Search</button>
+            <button type="button" class="btn btn-outline-secondary btn-vision" onclick="getLocation()">Use My Location</button>
+        </form>
     </div>
+    <script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                window.location.href = `/weather?lat=${lat}&lon=${lon}`;
+            }, error => {
+                alert("Unable to retrieve your location.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    </script>    
 </body>
 </html>
+
+
