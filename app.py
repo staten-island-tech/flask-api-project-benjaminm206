@@ -9,7 +9,12 @@ def home():
 
 @app.route("/weather", methods=["GET", "POST"])
 def weather():
-    url = "https://api.weather.gov/gridpoints/MPX/107,71/forecast"
+    url = "https://api.weather.gov/points/{lat},{lon}"
+    if request.method == "POST":
+        city = request.form.get("city")
+        formatted_city = city.replace(" ", "+")
+        geocoding_url = f"https://nominatim.openstreetmap.org/search?q={formatted_city}&format=json"
+        response = requests.get(geocoding_url, headers={"User-Agent": "weather-app"})
     try:
         response = requests.get(url)
         response.raise_for_status()
