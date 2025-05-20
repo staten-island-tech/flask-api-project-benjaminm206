@@ -9,28 +9,34 @@ def home():
 
 @app.route("/weather", methods=["GET", "POST"])
 def weather():
-    if request.method == "POST":
-        city = request.form.get("city")
-        lat = request.form.get("lat")
-        lon = request.form.get("lon")
+    forecast = None #Initializing an empty value to soon be filled
+    city = None
+    condition = None
+    if request.method == "POST": #sending data to API
+        city = request.form.get("city") #gets the city via the form on the index
+        formatted_city = city.replace(" ", "+") #removes spaces for URL
+        geocoding_url = f"https://nominatim.openstreetmap.org/search?q={formatted_city}&format=json" #takes the city and converts it into latitude and longitude
+        response = requests.get(geocoding_url, headers={"User-Agent": "weather-app"})
+        location_data = response.json()[0]
+        lat = location_data["lat"] #latitude
+        lon = location_data["lon"] #longitude
 
-        if city:
-            # Get location from city name
-            formatted_city = city.replace(" ", "+")
-            geocoding_url = f"https://nominatim.openstreetmap.org/search?q={formatted_city}&format=json"
-            response = requests.get(geocoding_url, headers={"User-Agent": "weather-app"})
-            location_data = response.json()[0]
-            lat = location_data["lat"]
-            lon = location_data["lon"]
+    if lat and lon:
+        points_url = f"https://api.weather.gov/points/{lat},{lon}"
+        points_response = requests.get(points_url).json()["properties"]
+    
+        forecast_url = points_response["forecast"]
+        hourly_url = points_response["forecastHourly"]
 
-        if lat and lon:
-            # Get weather from coordinates
-            point_url = f"https://api.weather.gov/points/{lat},{lon}"
-            forecast_url = requests.get(point_url).json()["properties"]["forecast"]
-            forecast = requests.get(forecast_url).json()
-            return render_template("weather.html", forecast=forecast)
+        forecast = requests.get(forecast_url).json()
+        hourly = requests.get(hourly_url).json()
 
-    return render_template("weather.html", forecast=None, city=city)
+        current_temp = forecast["properties"]["periods"][0]["temperature"]
+
+        condition = forecast['properties']['periods'][0]['shortForecast'].lower()
+
+    return render_template("weather.html", forecast=forecast, hourly=hourly, city=city, current_temp=current_temp)
+
 
 
     try:

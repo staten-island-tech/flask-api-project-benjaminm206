@@ -17,32 +17,141 @@
       }
     </style>
   </head>  
-<body>
-  <body class="d-flex align-items-center justify-content-center vh-100">
-    <div class="visionos-card w-100" style="max-width: 700px;">
-      <h1 class="text-center mb-4">Weather Forecast for {{ city }}</h1>
+  <body style="background: #f0f4f8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <h1 class="text-center mb-4" style="font-weight: 600; font-size: 2rem; margin-top: 1.5rem; color: #121232;">
+      Weather Forecast for {{ city }} ☁️🌞
+    </h1>
   
-      {% if forecast %}
-        <ul class="list-group list-group-flush">
-          {% for period in forecast['properties']['periods'] %}
-            <li class="list-group-item bg-transparent">
-              <strong>{{ period.name }}:</strong>
-              {{ period.temperature }}°{{ period.temperatureUnit }},
-              {{ period.shortForecast }},
-              <small class="text-muted">Winds: {{ period.windSpeed }}</small>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p class="text-center">Unable to load weather data.</p>
-      {% endif %}
+    {% if forecast %}
+    <div class="weather-grid">
+      <!-- Temperature -->
+      <div class="visionos-card weather-card">
+        <div class="emoji">🌡️</div>
+        <h3>Temperature</h3>
+        <p class="big-text">{{ forecast['properties']['periods'][0].temperature }}°{{ forecast['properties']['periods'][0].temperatureUnit }}</p>
+        <p class="small-text">{{ forecast['properties']['periods'][0].shortForecast }}</p>
+      </div>
   
-      <div class="text-center mt-4">
-        <a href="/" class="btn btn-outline-dark">Back to Home</a>
+      <!-- Wind Speed -->
+      <div class="visionos-card weather-card">
+        <div class="emoji">🌬️</div>
+        <h3>Wind Speed</h3>
+        <p class="big-text">{{ forecast['properties']['periods'][0].windSpeed }}</p>
+      </div>
+  
+      <!-- Precipitation -->
+      <div class="visionos-card weather-card">
+        <div class="emoji">🌧️</div>
+        <h3>Precipitation</h3>
+        <p class="big-text">{{ forecast['properties']['periods'][0].probabilityOfPrecipitation.value or "0" }}%</p>
+      </div>
+  
+      <!-- UV Index (placeholder) -->
+      <div class="visionos-card weather-card">
+        <div class="emoji">🕶️</div>
+        <h3>UV Index</h3>
+        <p class="big-text">{{ uv_index or "N/A" }}</p>
+      </div>
+  
+      <!-- Sunrise -->
+      <div class="visionos-card weather-card">
+        <div class="emoji">🌅</div>
+        <h3>Sunrise</h3>
+        <p class="big-text">{{ sunrise_time or "N/A" }}</p>
+      </div>
+  
+      <!-- Sunset -->
+      <div class="visionos-card weather-card">
+        <div class="emoji">🌇</div>
+        <h3>Sunset</h3>
+        <p class="big-text">{{ sunset_time or "N/A" }}</p>
       </div>
     </div>
-  </body>
   
+    {% else %}
+    <p class="text-center" style="font-size: 1.1rem; margin-top: 3rem; color: #666;">Unable to load weather data.</p>
+    {% endif %}
+  
+    <div class="text-center mt-4 mb-5">
+      <a href="/" class="btn btn-outline-dark" style="font-weight: 600;">Back to Home</a>
+    </div>
+  
+    <style>
+      .weather-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 960px;
+        margin: 1rem auto 3rem;
+        padding: 0 1rem;
+      }
+  
+      .visionos-card {
+        background: rgba(255, 255, 255, 0.40);
+        border-radius: 22px;
+        box-shadow: 0 10px 30px rgba(31, 38, 135, 0.12);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        padding: 2.4rem 2rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: default;
+        text-align: center;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+  
+      .visionos-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 15px 45px rgba(31, 38, 135, 0.25);
+      }
+  
+      .weather-card h3 {
+        margin-top: 0.6rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #0d0d2b;
+      }
+  
+      .emoji {
+        font-size: 2.8rem;
+        margin-bottom: 0.5rem;
+      }
+  
+      .big-text {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0.4rem 0 0.6rem;
+        color: #212147;
+        font-feature-settings: "liga";
+      }
+  
+      .small-text {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #606080;
+        line-height: 1.3;
+      }
+  
+      a.btn-outline-dark {
+        border-width: 2px;
+        padding: 0.5rem 1.6rem;
+        font-size: 1rem;
+        border-radius: 14px;
+        color: #121232;
+        transition: all 0.3s ease;
+      }
+  
+      a.btn-outline-dark:hover {
+        background-color: #121232;
+        color: white;
+        border-color: #121232;
+      }
+    </style>
+  </body>  
 </html>
 
 
