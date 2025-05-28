@@ -1,285 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Weatherly | {{ city }}</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #eef2f7;
-      margin: 0;
-      padding: 20px;
-      color: #222;
-    }
+    <meta charset="UTF-8">
+    <title>Weatherly | {{ city }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
-    h1, h2 {
-      margin: 0 0 10px;
-    }
+        h1 {
+            text-align: center;
+        }
 
-    /* Container for daily boxes */
-    .daily-container {
-      background: white;
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      margin-bottom: 30px;
-    }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    /* Daily boxes */
-    .day-box {
-      background: #f8f9fc;
-      border-radius: 15px;
-      padding: 15px 10px;
-      width: 120px;
-      text-align: center;
-      cursor: default;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    .day-box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-    }
+        .current-box {
+            background: #0077ff;
+            color: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            font-size: 32px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
 
-    .day-label {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-    }
-    .emoji {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .temp {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin: 5px 0;
-    }
-    .desc {
-      font-size: 0.9rem;
-      color: #555;
-    }
+        .current-box:hover {
+            transform: scale(1.03);
+        }
 
-    /* Current temperature box */
-    .current-temp-box {
-      background: #4a90e2;
-      color: white;
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 300px;
-      margin: 0 auto 40px auto;
-      text-align: center;
-      font-weight: 800;
-      font-size: 3.5rem;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 8px 20px rgba(74, 144, 226, 0.5);
-      transition: transform 0.25s ease;
-    }
-    .current-temp-box:hover {
-      transform: scale(1.1);
-    }
-    .current-temp-box p {
-      font-size: 1.1rem;
-      margin-top: 8px;
-      font-weight: 600;
-    }
+        .daily-wrapper {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-    /* Hourly overlay */
-    .hourly-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .overlay-content {
-      background: white;
-      border-radius: 20px;
-      max-width: 90vw;
-      max-height: 80vh;
-      padding: 25px 30px 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      position: relative;
-    }
-    .overlay-content h2 {
-      margin-bottom: 20px;
-      font-weight: 700;
-      text-align: center;
-    }
-    .close-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      font-size: 30px;
-      cursor: pointer;
-      color: #777;
-      transition: color 0.2s ease;
-    }
-    .close-btn:hover {
-      color: #333;
-    }
+        .daily-box {
+            background: #e0f0ff;
+            padding: 15px;
+            border-radius: 8px;
+            width: 120px;
+            text-align: center;
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
 
-    /* Hourly boxes container */
-    .hourly-box-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: center;
-      max-height: 70vh;
-      overflow-y: auto;
-      padding-right: 8px; /* for scrollbar space */
-    }
+        .daily-box:hover {
+            transform: scale(1.05);
+        }
 
-    /* Each hourly box */
-    .hourly-box {
-      background: #f1f5fb;
-      border-radius: 14px;
-      padding: 14px 12px;
-      width: 90px;
-      text-align: center;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
-      cursor: default;
-    }
-    .hourly-box:hover {
-      transform: scale(1.07);
-      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-    }
-    .hourly-box p {
-      margin: 5px 0;
-    }
-    .hour-label {
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 6px;
-    }
-    .hour-temp {
-      font-weight: 800;
-      font-size: 1.2rem;
-      margin-bottom: 4px;
-    }
-    .hour-desc {
-      font-size: 0.85rem;
-      color: #555;
-    }
+        .hourly-box-container {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 10;
+            padding: 20px;
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-    /* Scrollbar styling for hourly container */
-    .hourly-box-container::-webkit-scrollbar {
-      height: 8px;
-    }
-    .hourly-box-container::-webkit-scrollbar-thumb {
-      background: #4a90e2;
-      border-radius: 10px;
-    }
-    .hourly-box-container::-webkit-scrollbar-track {
-      background: #e0e7ff;
-      border-radius: 10px;
-    }
+        .hourly-box {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            flex: 1 0 70px;
+            font-size: 14px;
+        }
 
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      .daily-container {
-        padding: 10px;
-        gap: 10px;
-      }
-      .day-box {
-        width: 90px;
-        padding: 10px 6px;
-      }
-      .current-temp-box {
-        font-size: 2.8rem;
-        padding: 22px;
-        max-width: 250px;
-      }
-      .hourly-box {
-        width: 70px;
-        padding: 10px 8px;
-      }
-    }
-  </style>
+        .close-button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .daily-box {
+                width: 100px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <h1>Weatherly | {{ city }}</h1>
+    <div class="container">
+        {% if current_temp %}
+        <div class="current-box" onclick="toggleHourly()">Current Temperature: {{ current_temp }}°</div>
+        {% endif %}
 
-  <div class="current-temp-box" onclick="openOverlay()" title="Click to view hourly forecast">
-    {{ current_temp }}°
-    <p>Click for Hourly Forecast</p>
-  </div>
-
-  <div class="daily-container">
-    {% for day in forecast['properties']['periods'][:7] %}
-      {% set day_name = day['name'] %}
-      {% set day_name = day_name.replace('Today', 'Today').replace('Tonight', 'Tonight') %}
-      {% set day_name = day_name if day_name in ['Today', 'Tonight'] else day_name[:3] %}
-      
-      {% set emoji = '' %}
-      {% if 'sun' in day['shortForecast']|lower %} {% set emoji = '☀️' %}
-      {% elif 'cloud' in day['shortForecast']|lower %} {% set emoji = '☁️' %}
-      {% elif 'rain' in day['shortForecast']|lower %} {% set emoji = '🌧️' %}
-      {% elif 'storm' in day['shortForecast']|lower %} {% set emoji = '⛈️' %}
-      {% elif 'snow' in day['shortForecast']|lower %} {% set emoji = '❄️' %}
-      {% else %} {% set emoji = '🌤️' %} {% endif %}
-
-      <div class="day-box" title="{{ day['shortForecast'] }}">
-        <div class="day-label">{{ day_name }}</div>
-        <span class="emoji">{{ emoji }}</span>
-        <div class="temp">{{ day['temperature'] }}°{{ day['temperatureUnit'] }}</div>
-        <div class="desc">{{ day['shortForecast'] }}</div>
-      </div>
-    {% endfor %}
-  </div>
-
-  <!-- Hourly Forecast Overlay -->
-  <div id="hourlyOverlay" class="hourly-overlay" role="dialog" aria-modal="true" aria-labelledby="hourlyTitle">
-    <div class="overlay-content">
-      <button onclick="closeOverlay()" aria-label="Close hourly forecast" class="close-btn">&times;</button>
-      <h2 id="hourlyTitle">Hourly Forecast</h2>
-      <div class="hourly-box-container">
-        {% for hour in hourly['properties']['periods'][:24] %}
-          {% set raw_time = hour['startTime'].split('T')[1].split(':')[0] %}
-          {% set hour_num = raw_time|int %}
-
-          {% if hour_num == 0 %}
-            {% set label = '12 AM' %}
-          {% elif hour_num < 12 %}
-            {% set label = hour_num|string + ' AM' %}
-          {% elif hour_num == 12 %}
-            {% set label = '12 PM' %}
-          {% else %}
-            {% set label = (hour_num - 12)|string + ' PM' %}
-          {% endif %}
-
-          <div class="hourly-box" title="{{ hour['shortForecast'] }}">
-            <p class="hour-label">{{ label }}</p>
-            <p class="hour-temp">{{ hour['temperature'] }}°{{ hour['temperatureUnit'] }}</p>
-            <p class="hour-desc">{{ hour['shortForecast'] }}</p>
-          </div>
-        {% endfor %}
-      </div>
+        {% if forecast %}
+        <div class="daily-wrapper">
+            {% for period in forecast.properties.periods[:7] %}
+            <div class="daily-box">
+                <strong>
+                    {{ period.name if period.name|length <= 3 else period.name.split()[0][:3] }}
+                </strong><br>
+                {{ period.temperature }}° {{ period.temperatureUnit }}<br>
+                {{ period.shortForecast }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
-  </div>
 
-  <script>
-    function openOverlay() {
-      document.getElementById('hourlyOverlay').style.display = 'flex';
-    }
-    function closeOverlay() {
-      document.getElementById('hourlyOverlay').style.display = 'none';
-    }
-  </script>
+    {% if hourly %}
+    <div class="hourly-box-container" id="hourlyBox">
+        <button class="close-button" onclick="toggleHourly()">Close</button>
+        {% for hour in hourly.properties.periods[:24] %}
+        <div class="hourly-box">
+            {{ hour.startTime[11:13]|int % 12 if hour.startTime[11:13]|int != 0 else 12 }}
+            {{ "AM" if hour.startTime[11:13]|int < 12 else "PM" }}<br>
+            {{ hour.temperature }}°{{ hour.temperatureUnit }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <script>
+        function toggleHourly() {
+            const box = document.getElementById("hourlyBox");
+            box.style.display = (box.style.display === "flex") ? "none" : "flex";
+        }
+    </script>
 </body>
 </html>
