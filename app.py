@@ -34,7 +34,7 @@ def weather():
         forecast = requests.get(forecast_url).json()
         hourly = requests.get(hourly_url).json()
         details = requests.get(details_url).json()
-        current_temp = forecast["properties"]["periods"][0]["temperature"]
+        current_temp = hourly["properties"]["periods"][0]["temperature"]
 
     return render_template("weather.html", forecast=forecast, hourly=hourly, details=details, city=city, current_temp=current_temp)
 
