@@ -13,8 +13,7 @@ def weather():
     city = None
     current_temp = None
     hourly = None
-    daily = None
-
+    
     if request.method == "POST": #sending data to API
         city = request.form.get("city") #gets the city via the form on the index
         formatted_city = city.replace(" ", "+") #removes spaces for URL
@@ -24,16 +23,19 @@ def weather():
         lat = location_data["lat"] #latitude
         lon = location_data["lon"] #longitude
 
-        points_url = f"https://api.weather.gov/points/{lat},{lon}" #Inputs lat and lon to the weather API
-        points_response = requests.get(points_url).json()["properties"] #Recieving the weather of the location based on lat and lon
-        # Getting all the data
+        #Imputting lat and lon into weather API
+        points_url = f"https://api.weather.gov/points/{lat},{lon}"
+        #Getting response containing location of the URL's for the weather data 
+        points_response = requests.get(points_url).json()["properties"]
+        # Extracting the URL's for the forecast using the lat and lon
         forecast_url = points_response["forecast"]
         hourly_url = points_response["forecastHourly"]
         details_url = points_response["forecastGridData"]
-        # Converting it into a readable json
+        # Fetching the weather data from each URL
         forecast = requests.get(forecast_url).json()
         hourly = requests.get(hourly_url).json()
         details = requests.get(details_url).json()
+        # Fetching data for the hourly forecast
         current_temp = hourly["properties"]["periods"][0]["temperature"]
 
     return render_template("weather.html", forecast=forecast, hourly=hourly, details=details, city=city, current_temp=current_temp)
